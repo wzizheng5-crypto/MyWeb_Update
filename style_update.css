@@ -1,0 +1,78 @@
+/* --- Global Dark Futuristic Theme --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #0a0f24, #000000);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #00eaff;
+}
+
+/* Futuristic glass container */
+.container {
+    backdrop-filter: blur(8px);
+    background: rgba(15, 20, 40, 0.55);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    padding: 40px;
+    width: 350px;
+    border-radius: 14px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.15);
+    text-align: center;
+}
+
+/* Neon title */
+h2 {
+    margin-bottom: 20px;
+    color: #00eaff;
+    text-shadow: 0 0 12px #00eaff;
+}
+
+/* Input fields */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 6px;
+    background: #0b132b;
+    border: 1px solid #00eaff;
+    color: #00eaff;
+    outline: none;
+    font-size: 14px;
+}
+
+input:focus {
+    box-shadow: 0 0 12px #00eaff;
+}
+
+/* Neon glow button */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background: #00eaff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    text-shadow: 0 0 10px #000;
+}
+
+button:hover {
+    background: #00c4d0;
+    box-shadow: 0 0 18px #00eaff;
+}
+
+/* Links */
+a {
+    color: #00eaff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
