@@ -3,12 +3,18 @@ const bodyParser = require("body-parser");
 const path = require("path");
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
 
+// 解析 POST 请求体数据
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json()); // 建议加上这一行以支持 JSON 数据
+
+// 设置静态文件目录 (让 HTML 能被访问)
 app.use(express.static(path.join(__dirname)));
 
-// 内存存储用户数据（演示用）
+// 内存数据库（演示用）
 let users = [];
+
+// --- 页面路由 ---
 
 // 首页（注册页面）
 app.get("/", (req, res) => {
@@ -20,36 +26,58 @@ app.get("/login", (req, res) => {
     res.sendFile(path.join(__dirname, "login.html"));
 });
 
-// 注册功能
+// --- 功能接口 ---
+
+// 注册功能 (修复后的核心逻辑)
 app.post("/register", (req, res) => {
+    // [调试] 打印前端传来的原始数据，确保字段名正确
+    console.log("收到注册请求:", req.body);
+
+    // 关键修复点：这里解构的变量名必须与 HTML 中的 name 属性完全一致
     const { username, email, password, confirmPassword } = req.body;
 
-    // BUG-01 修复：username 不能为空
-    if (!username) return res.send("Username is required!");
+    // --- BUG-01 修复：检查 username 是否为空 ---
+    if (!username || username.trim() === "") {
+        return res.status(400).send("Error: Username is required!");
+    }
 
-    // Email 校验
-    if (!email) return res.send("Email is required!");
-    if (!email.includes("@")) return res.send("Invalid email format!");
+    // Email 基本校验
+    if (!email) {
+        return res.status(400).send("Error: Email is required!");
+    }
+    if (!email.includes("@")) {
+        return res.status(400).send("Error: Invalid email format!");
+    }
 
-    // 密码校验
-    if (!password) return res.send("Password is required!");
+    // 密码存在校验
+    if (!password) {
+        return res.status(400).send("Error: Password is required!");
+    }
 
-    // BUG-02 修复：正确的密码长度判断（至少 6 位）
-    if (password.length < 6) return res.send("Password must be at least 6 characters!");
+    // --- BUG-02 修复：密码长度至少 6 位 ---
+    // 原错误逻辑可能是 > 6 或其他，现修正为 < 6 报错
+    if (password.length < 6) {
+        return res.status(400).send("Error: Password must be at least 6 characters!");
+    }
 
-    // BUG-03 修复：验证两次密码一致
-    if (password !== confirmPassword) return res.send("Passwords do not match!");
+    // --- BUG-03 修复：验证确认密码 ---
+    // 必须确保 HTML 中 input 的 name="confirmPassword"
+    if (password !== confirmPassword) {
+        return res.status(400).send("Error: Passwords do not match!");
+    }
 
-    // BUG-04 修复：字段命名改回 username
-    const newUser = { username, email, password };
-
-    // 检查重复用户名
+    // 检查用户名是否已存在
     const existUser = users.find(u => u.username === username);
-    if (existUser) return res.send("Username already exists. Please login.");
+    if (existUser) {
+        return res.status(400).send("Error: Username already exists. Please login.");
+    }
 
+    // --- BUG-04 修复：数据结构规范化 ---
+    // 使用标准的 username 字段存入数据库，而非 user
+    const newUser = { username, email, password };
     users.push(newUser);
-    console.log("User registered:", newUser);
-
+    
+    console.log("注册成功，新用户:", newUser);
     res.send(`Registration successful! You can now <a href="/login">login</a>.`);
 });
 
@@ -57,20 +85,21 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
 
-    if (!username) return res.send("Username is required!");
-    if (!password) return res.send("Password is required!");
+    if (!username || !password) {
+        return res.status(400).send("Username and Password are required!");
+    }
 
-    // 查找账号
+    // 查找用户
     const foundUser = users.find(u => u.username === username && u.password === password);
 
     if (foundUser) {
-        res.send(`Login successful! Welcome, ${username}`);
+        res.send(`Login successful! Welcome, ${foundUser.username}`);
     } else {
         const existUser = users.find(u => u.username === username);
         if (existUser) {
-            res.send("Incorrect password. Please try again.");
+            res.status(401).send("Incorrect password. Please try again.");
         } else {
-            res.send("User not found. Please register first.");
+            res.status(404).send("User not found. Please register first.");
         }
     }
 });

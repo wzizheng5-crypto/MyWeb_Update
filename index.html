@@ -2,138 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up</title>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Ultimate VV Challenge</title>
     <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #0a0f24, #0e1a3a, #112455);
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            overflow: hidden;
-        }
-
-        /* 背景粒子 */
-        .particles {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image: radial-gradient(#4fc3f7 1px, transparent 1px);
-            background-size: 3px 3px;
-            opacity: 0.15;
-            z-index: -1;
-            animation: moveParticles 20s linear infinite;
-        }
-
-        @keyframes moveParticles {
-            from { background-position: 0 0; }
-            to { background-position: 1000px 1000px; }
-        }
-
-        /* 玻璃卡片效果 */
-        .card {
-            width: 380px;
-            padding: 30px 40px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 25px rgba(0, 180, 255, 0.3);
-            animation: fadeIn 1.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
-
-        /* 输入框 */
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 12px 0;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-            background: rgba(255, 255, 255, 0.12);
-            color: white;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            box-shadow: 0 0 12px #00eaff;
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* 按钮 */
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #009ffd, #2a2a72);
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-        }
-
-        button:hover {
-            background: linear-gradient(135deg, #00c6ff, #1d2671);
-            transform: scale(1.03);
-        }
-
-        p {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        a {
-            color: #00eaff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
+        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        form { border: 1px solid #ccc; padding: 20px; border-radius: 5px; width: 300px; }
+        div { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #218838; }
     </style>
 </head>
 <body>
 
-<div class="particles"></div>
-
-<div class="card">
-    <h2>User Registration</h2>
-
     <form action="/register" method="POST">
-        <input type="text" name="username" placeholder="Username">
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <input type="password" name="confirmPassword" placeholder="Confirm Password">
-        <button type="submit">Register</button>
-    </form>
+        <h2>Register</h2>
+        
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required placeholder="Enter your username">
+        </div>
 
-    <p>Already registered? <a href="/login">Login here</a></p>
-</div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required placeholder="example@email.com">
+        </div>
+
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required minlength="6" placeholder="At least 6 characters">
+        </div>
+
+        <div>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Re-enter password">
+        </div>
+
+        <button type="submit">Sign Up</button>
+        
+        <p style="text-align: center; font-size: 0.9em;">
+            Already have an account? <a href="/login">Login here</a>
+        </p>
+    </form>
 
 </body>
 </html>
